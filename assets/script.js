@@ -37,11 +37,7 @@ const timeZones = {
 function updateTime(timeZone) {
     const now = new Date();
 
-    const utcOffsetInHours = -now.getTimezoneOffset() / 60;
-    const selectedTimeZoneOffset = timeZones[timeZone] || 0;
-    const timeDifference = selectedTimeZoneOffset - utcOffsetInHours;
-
-    const targetTime = new Date(now.getTime() + (timeDifference * 60 * 60 * 1000));
+    const targetTime = new Date(now.toLocaleString("en-US", { timeZone }));
 
     const hours = targetTime.getHours().toString().padStart(2, '0');
     const minutes = targetTime.getMinutes().toString().padStart(2, '0');
@@ -56,10 +52,13 @@ function updateTime(timeZone) {
 
 function calculateOffset(timeZone) {
     const now = new Date();
-    const localOffsetInHours = -now.getTimezoneOffset() / 60;
-    const selectedTimeZoneOffset = timeZones[timeZone] || 0;
-    const offset = selectedTimeZoneOffset - localOffsetInHours;
-    document.getElementById('offset').innerText = `${offset}`;
+    
+    const localOffsetInMinutes = now.getTimezoneOffset();
+    const targetTime = new Date(now.toLocaleString("en-US", { timeZone }));
+    const targetOffsetInMinutes = -targetTime.getTimezoneOffset();
+    
+    const offsetInHours = (targetOffsetInMinutes - localOffsetInMinutes) / 60;
+    document.getElementById('offset').innerText = `${offsetInHours}`;
 }
 
 function initClock(timeZone) {
