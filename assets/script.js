@@ -37,7 +37,6 @@ const timeZones = {
 function updateTime(timeZone) {
     const now = new Date();
 
-    // Get the current time in the specified time zone
     const targetTime = new Date(now.toLocaleString("en-US", { timeZone }));
 
     const hours = targetTime.getHours().toString().padStart(2, '0');
