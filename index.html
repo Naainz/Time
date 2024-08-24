@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: white;
+            font-family: 'Satoshi', sans-serif;
+            color: black;
+        }
+
+        .timer-container {
+            text-align: center;
+            letter-spacing: 0.3em;
+        }
+
+        .time {
+            font-size: 120px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .time {
+                font-size: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="timer-container">
+        <div id="time" class="time"></div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const timeString = `${hours} ${minutes} ${seconds}`;
+            document.getElementById('time').innerText = timeString;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
