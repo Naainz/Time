@@ -71,7 +71,12 @@
     <script>
         function updateTime() {
             const now = new Date();
-            const estNow = new Date(now.getTime() + (now.getTimezoneOffset() + 300) * 60 * 1000);
+
+            const estOffsetInHours = -5;
+            const localOffsetInHours = -now.getTimezoneOffset() / 60; 
+            const timeDifference = estOffsetInHours - localOffsetInHours;
+
+            const estNow = new Date(now.getTime() + (timeDifference * 60 * 60 * 1000));
 
             const hours = estNow.getHours().toString().padStart(2, '0');
             const minutes = estNow.getMinutes().toString().padStart(2, '0');
@@ -86,9 +91,9 @@
 
         function calculateOffset() {
             const now = new Date();
-            const estOffset = now.getTimezoneOffset() + 300;
-            const hoursOffset = Math.round(estOffset / 60);
-            document.getElementById('offset').innerText = `-${hoursOffset}`;
+            const localOffsetInHours = -now.getTimezoneOffset() / 60;
+            const estOffset = Math.abs(-5 - localOffsetInHours);
+            document.getElementById('offset').innerText = `-${Math.round(estOffset)}`;
         }
 
         function initClock() {
