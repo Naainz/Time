@@ -58,16 +58,12 @@ function calculateOffset(timeZone) {
     const now = new Date();
     const localOffsetInHours = -now.getTimezoneOffset() / 60;
     const selectedTimeZoneOffset = timeZones[timeZone] || 0;
-    const offset = Math.abs(selectedTimeZoneOffset - localOffsetInHours);
-    document.getElementById('offset').innerText = `-${Math.round(offset)}`;
+    const offset = selectedTimeZoneOffset - localOffsetInHours;
+    document.getElementById('offset').innerText = `${offset}`;
 }
 
-function initClock() {
-    const params = new URLSearchParams(window.location.search);
-    const timeZone = params.get('tz') || 'UTC';  // Default to UTC if no timezone is specified
+function initClock(timeZone) {
     calculateOffset(timeZone);
     updateTime(timeZone);
     setInterval(() => updateTime(timeZone), 1000);
 }
-
-initClock();
