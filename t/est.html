@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EST Clock</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: white;
+            font-family: 'Satoshi', sans-serif;
+            color: black;
+        }
+
+        .timer-container {
+            text-align: center;
+            letter-spacing: 0.3em;
+            position: relative;
+            width: fit-content;
+        }
+
+        .time {
+            font-size: 120px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+        }
+
+        .date, .offset {
+            font-size: 24px;
+            position: absolute;
+            letter-spacing: normal;
+            width: 100%;
+        }
+
+        .date {
+            right: 0;
+            bottom: -20px;
+            text-align: right;
+        }
+
+        .offset {
+            left: 0;
+            bottom: -20px;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .time {
+                font-size: 60px;
+            }
+            .date, .offset {
+                font-size: 16px;
+                bottom: -15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="timer-container">
+        <div id="time" class="time"></div>
+        <div id="date" class="date"></div>
+        <div id="offset" class="offset"></div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const estNow = new Date(now.getTime() + (now.getTimezoneOffset() + 300) * 60 * 1000);
+
+            const hours = estNow.getHours().toString().padStart(2, '0');
+            const minutes = estNow.getMinutes().toString().padStart(2, '0');
+            const seconds = estNow.getSeconds().toString().padStart(2, '0');
+            const timeString = `${hours} ${minutes} ${seconds}`;
+            document.getElementById('time').innerText = timeString;
+
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const dateString = estNow.toLocaleDateString(undefined, options);
+            document.getElementById('date').innerText = dateString;
+        }
+
+        function calculateOffset() {
+            const now = new Date();
+            const estOffset = now.getTimezoneOffset() + 300;
+            const hoursOffset = Math.round(estOffset / 60);
+            document.getElementById('offset').innerText = `-${hoursOffset}`;
+        }
+
+        function initClock() {
+            calculateOffset();
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        initClock();
+    </script>
+</body>
+</html>
